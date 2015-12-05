@@ -1,13 +1,8 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   
   def show # 追加
-   @user = User.find(params[:id])
-   if @user == current_user
-     
-     else
-       redirect_to root_url,  alert: "不正なアクセス"
-      
-   end
    
   end
   
@@ -26,23 +21,15 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
-    if @user == current_user
-     
-     else
-       redirect_to root_url,  alert: "不正なアクセス"
-      
-    end
-    
+  
   end
 
   def update
-     @user = User.find(params[:id])
-      if @user.update(user_params)
-        redirect_to user_url(@user)
-      else
-        render 'edit'
-      end
+    if @user.update(user_params)
+      redirect_to user_url(@user)
+    else
+      render :edit
+    end
   end
 
   private
@@ -50,5 +37,19 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :email, :password,
                                  :password_confirmation)
+  end
+  
+  def set_user
+    @user = User.find(params[:id])
+  end
+  
+  def correct_user
+    if logged_in?
+      unless current_user == @user  #イコールでなければ↓を実行
+        redirect_to root_url, alert: '不正なアクセス'
+      end
+    else
+      redirect_to root_url, alert: 'ログインしてください'
+    end
   end
 end
