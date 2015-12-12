@@ -1,0 +1,6 @@
+<h1>Followers</h1>
+<ul>
+  <% @followers.each do |u| %>
+    <li><%= link_to u.name, u %>
+  <% end %>
+</ul>

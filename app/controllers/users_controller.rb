@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :followings, :followers]
   before_action :correct_user, only: [:edit, :update, :destroy]
   
   def show
@@ -33,6 +33,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def followings
+    @followings = @user.following_users.order(created_at: :desc)
+  end
+
+  def followers
+    @followers = @user.follower_users.order(created_at: :desc)
+  end
+  
   private
 
   def user_params
@@ -53,4 +61,6 @@ class UsersController < ApplicationController
       redirect_to root_url, alert: 'ログインしてください'
     end
   end
+  
+
 end
