@@ -1,6 +1,7 @@
 <h1>Following</h1>
-<ul>
+<ul class="followings">
   <% @followings.each do |u| %>
-    <li><%= link_to u.name, u %>
+        <%# 一覧にnameだけでなく画像をつけるためgravatar_for @userを追加%>
+    <li><%= gravatar_for @user %><%= link_to u.name, u %></li>
   <% end %>
 </ul>
